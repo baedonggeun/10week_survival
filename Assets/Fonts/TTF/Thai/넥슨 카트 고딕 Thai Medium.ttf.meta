@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 7265e615890afd849a3f7e46a4ed4eba
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Kartrider Thai
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 418c8ce787d052349890dcefe173532c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
