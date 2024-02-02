@@ -8,6 +8,12 @@ public interface IDamagable
 {
     void TakePhysicalDamage(int damageAmount);
 }
+/*
+* 인터페이스를 쓰는 이유
+* 인터페이스를 쓰려는 애가 어떤 애인지는 모르지만 IDamagable 이라는 인터페이스를 상속 받은 상태이므로 
+* takePhysicalDamage 함수가 있을 것이고, 내가 그 함수를 쓸거니 다른게 뭐가 있든 없든
+* 그 함수만 가져와서 쓰기 위해
+*/
 
 [System.Serializable]       //Condition 클래스를 unity에서 인스펙터 창에 나타낼 수 있도록 Serialize
 public class Condition
