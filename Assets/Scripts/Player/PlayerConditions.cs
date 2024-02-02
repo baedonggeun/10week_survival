@@ -39,7 +39,7 @@ public class Condition
 
 
 public class PlayerConditions : MonoBehaviour, IDamagable
-//c# 에선 다중 클래스 상속은 지원하지 않지만, 인터페이스 다중 상속은 지원함
+//c# 에선 클래스별 다중 상속은 지원하지 않지만, 인터페이스 다중 상속은 지원함
 {
     public Condition health;        //체력
     public Condition hunger;        //공복도
@@ -102,7 +102,7 @@ public class PlayerConditions : MonoBehaviour, IDamagable
         Debug.Log("플레이어가 죽었다.");
     }
 
-    public void TakePhysicalDamage(int damageAmount)        //데미지를 받았을 경우, 이벤트 확인 후 실행
+    public void TakePhysicalDamage(int damageAmount)        //데미지를 받았을 경우, 이벤트 Null 체크 후 실행
     {
         health.Subtract(damageAmount);
         onTakeDamage?.Invoke();
