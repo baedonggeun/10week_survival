@@ -65,14 +65,13 @@ public class Inventory : MonoBehaviour
         ClearSeletecItemWindow();
     }
 
-    public void OnInventoryButton(InputAction.CallbackContext callbackContext)
+    public void OnInventoryButton(InputAction.CallbackContext callbackContext)      //인벤토리 버튼 눌렀을 때 동작하는 함수
     {
-        if (callbackContext.phase == InputActionPhase.Started)
+        if (callbackContext.phase == InputActionPhase.Started)      //인풋이 들어온 순간(started)
         {
-            Toggle();
+            Toggle();       //인벤토리 창 키고 끄는 함수 실행
         }
     }
-
 
     public void Toggle()        //인벤토리 창 키고 끄는 함수
     {
@@ -80,13 +79,15 @@ public class Inventory : MonoBehaviour
         {
             inventoryWindow.SetActive(false);       //인벤토리 창 끔
             onCloseInventory?.Invoke();
-            //controller.ToggleCursor(false);
+            controller.ToggleCursor(false);
+            //인벤토리 창을 사용하려면 마우스 커서 토글 락 걸어놓은 걸 풀어줘야함
         }
         else        //하이라키 상에서 인벤토리 창이 꺼져있으면
         {
             inventoryWindow.SetActive(true);        //인벤토리 창 킴
             onOpenInventory?.Invoke();
-            //controller.ToggleCursor(true);
+            controller.ToggleCursor(true);
+            //인벤토리 창이 꺼졌으므로 마우스 커서 토글 락 다시 걸어야함
         }
     }
 
@@ -146,51 +147,54 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].item == item && slots[i].quantity < item.maxStackAmount)
-                return slots[i];
+            if (slots[i].item == item && slots[i].quantity < item.maxStackAmount)       
+            //슬롯의 아이템이 내가 찾는 아이템(매개변수로 받아온)이고, 중첩 수량이 최대 중첩 수량보다 작다면
+                return slots[i];        //해당 슬롯을 반환
         }
 
         return null;
     }
 
-    ItemSlot GetEmptySlot()
+    ItemSlot GetEmptySlot()     //빈 슬롯을 찾는 함수
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].item == null)
-                return slots[i];
+            if (slots[i].item == null)      //슬롯이 비어있다면
+                return slots[i];        //해당 슬롯을 반환
         }
 
         return null;
     }
 
-    public void SelectItem(int index)
+    public void SelectItem(int index)       //아이템 선택 함수
     {
-        if (slots[index].item == null)
-            return;
+        if (slots[index].item == null)      //index값에 해당하는 슬롯이 비어있다면
+            return;     //선택할 수 없으므로 반환
 
-        selectedItem = slots[index];
-        selectedItemIndex = index;
+        selectedItem = slots[index];        //선택된 아이템을 index번째 아이템슬롯으로 변경
+        selectedItemIndex = index;      //해당 index도 변경
 
+        //선택된 아이템의 이름과 설명을 scriptable object의 itemData 에서 받아옴
         selectedItemName.text = selectedItem.item.displayName;
         selectedItemDescription.text = selectedItem.item.description;
 
         selectedItemStatNames.text = string.Empty;
         selectedItemStatValues.text = string.Empty;
 
-        for (int i = 0; i < selectedItem.item.consumables.Length; i++)
+        for (int i = 0; i < selectedItem.item.consumables.Length; i++)      //????
         {
             selectedItemStatNames.text += selectedItem.item.consumables[i].type.ToString() + "\n";
             selectedItemStatValues.text += selectedItem.item.consumables[i].value.ToString() + "\n";
         }
 
-        useButton.SetActive(selectedItem.item.type == ItemType.Consumable);
-        equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !uiSlots[index].equipped);
-        unEquipButton.SetActive(selectedItem.item.type == ItemType.Equipable && uiSlots[index].equipped);
-        dropButton.SetActive(true);
+        //버튼들을 상황에 따라 키고 끄고 설정
+        useButton.SetActive(selectedItem.item.type == ItemType.Consumable);     //소비형 아이템이면 사용버튼 활성화
+        equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !uiSlots[index].equipped);        //장비 아이템이고 장착이 안 되어 있다면 장착버튼 활성화
+        unEquipButton.SetActive(selectedItem.item.type == ItemType.Equipable && uiSlots[index].equipped);       //장비 아이템이고 장착되어 있다면 장비해제버튼 활성화
+        dropButton.SetActive(true);     //아이템 드랍버튼 활성화
     }
 
-    private void ClearSeletecItemWindow()
+    private void ClearSeletecItemWindow()       //선택된 아이템 초기화 함수
     {
         selectedItem = null;
         selectedItemName.text = string.Empty;
@@ -207,20 +211,20 @@ public class Inventory : MonoBehaviour
 
     public void OnUseButton()       //아이템 사용 버튼 동작 시 작동해야할 함수
     {
-        if (selectedItem.item.type == ItemType.Consumable)
+        if (selectedItem.item.type == ItemType.Consumable)      //아이템 타입이 소비 아이템이라면
         {
             for (int i = 0; i < selectedItem.item.consumables.Length; i++)
             {
-                switch (selectedItem.item.consumables[i].type)
+                switch (selectedItem.item.consumables[i].type)      //소비 타입에 따라
                 {
-                    case ConsumableType.Health:
-                        condition.Heal(selectedItem.item.consumables[i].value); break;
-                    case ConsumableType.Hunger:
-                        condition.Eat(selectedItem.item.consumables[i].value); break;
+                    case ConsumableType.Health:     //체력 타입이라면
+                        condition.Heal(selectedItem.item.consumables[i].value); break;      //heal 함수 실행
+                    case ConsumableType.Hunger:     //공복도 타입이라면
+                        condition.Eat(selectedItem.item.consumables[i].value); break;       //eat 함수 실행
                 }
             }
         }
-        RemoveSelectedItem();
+        RemoveSelectedItem();       //해당 아이템이 소비되었으므로 개수 감소 또는 제거
     }
 
     public void OnEquipButton()     //장착 버튼 동작 시 작동해야할 함수
@@ -251,20 +255,20 @@ public class Inventory : MonoBehaviour
 
     private void RemoveSelectedItem()       //인벤토리에서 선택된 아이템 제거 함수
     {
-        selectedItem.quantity--;
+        selectedItem.quantity--;        //선택된 아이템 수량 1개 감소
 
-        if (selectedItem.quantity <= 0)
+        if (selectedItem.quantity <= 0)     //수량이 0보다 작거나 같다면
         {
-            if (uiSlots[selectedItemIndex].equipped)
+            if (uiSlots[selectedItemIndex].equipped)        //장작 중인 아이템이라면
             {
-                UnEquip(selectedItemIndex);
+                UnEquip(selectedItemIndex);     //장착 해제
             }
 
-            selectedItem.item = null;
-            ClearSeletecItemWindow();
+            selectedItem.item = null;       //선택된 아이템 제거
+            ClearSeletecItemWindow();       //선택된 아이템 초기화
         }
 
-        UpdateUI();
+        UpdateUI();     //UI 업데이트
     }
 
     public void RemoveItem(ItemData item)       //아이템 제거 함수

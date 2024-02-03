@@ -46,7 +46,7 @@ public class ItemSlotUI : MonoBehaviour
         quatityText.text = string.Empty;        //수량 텍스트 empty로 설정
     }
 
-    public void OnButtonClick()     //슬롯 클릭시 인벤토리 클래스의 SelectItem 함수에 index를 넘겨주고 실행
+    public void OnButtonClick()     //슬롯 클릭 시 인벤토리 클래스의 SelectItem 함수에 index를 넘겨주고 실행
     {
         Inventory.instance.SelectItem(index);
     }

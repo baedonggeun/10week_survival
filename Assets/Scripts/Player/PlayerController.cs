@@ -149,4 +149,11 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(transform.position + (transform.right * 0.2f), Vector3.down);
         Gizmos.DrawRay(transform.position + (-transform.right * 0.2f), Vector3.down);
     }
+
+    public void ToggleCursor(bool toggle)       //토글(인벤 창 등) 여부에 따라 커서와 시야 회전 키고 끄는 함수
+    {
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        //toggle 이 true false에 따라 커서 락 키고 끔;
+        canLook = !toggle;      //토글이 켜졌을 경우(커서 생김) 시야 못 돌리게, 토글이 꺼졌을 경우(커서 없어짐) 시야 돌리게
+    }
 }

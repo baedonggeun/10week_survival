@@ -18,8 +18,8 @@ public enum ConsumableType      //소비 아이템 타입
 [System.Serializable]
 public class ItemDataConsumable
 {
-    public ConsumableType type;
-    public float value;
+    public ConsumableType type;     //타입
+    public float value;     //개수
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]     //에셋 메뉴 설정 -> 우클릭 create 에 menu 추가
